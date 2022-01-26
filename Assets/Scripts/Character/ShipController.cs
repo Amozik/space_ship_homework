@@ -16,11 +16,11 @@ namespace Character
         private float _shipSpeed;
         private Rigidbody _rigidbody;
 
-        [SyncVar] 
+        [SyncVar(hook = "DisplayPlayerName")] 
         private string _playerName;
 
         [SyncEvent]
-        public event Action OnSomethingHappend;
+        public event Action EventOnSomethingHappend;
 
         protected override float Speed => _shipSpeed;
 
@@ -44,7 +44,7 @@ namespace Character
             if (_rigidbody == null)            
                 return;
             
-            gameObject.name = _playerName;
+            //DisplayPlayerName(_playerName ?? "player");
             _cameraOrbit = FindObjectOfType<CameraOrbit>();
             _cameraOrbit.Initiate(_cameraAttach == null ? transform : _cameraAttach);
             _playerLabel = GetComponentInChildren<PlayerLabel>();
@@ -60,6 +60,8 @@ namespace Character
 
         public override void OnStartLocalPlayer()
         {
+            CmdSendName(PlayerPrefs.GetString("PlayerName"));
+            
             base.OnStartLocalPlayer();
 
             Debug.Log("OnStartLocalPlayer");
@@ -101,6 +103,20 @@ namespace Character
         protected override void SendToServer() { }
 
         [Command]
+        private void CmdSendName(string playerName)
+        {
+            _playerName = playerName;
+        }
+        
+        public void DisplayPlayerName(string newName)
+        {
+            Debug.Log("Player changed name to " + newName);
+
+            _playerName = newName;
+            gameObject.name = _playerName;
+        }
+
+        [Command]
         private void CmdCommandMethod()
         {
 
@@ -137,7 +153,7 @@ namespace Character
         }
 
         [TargetRpc]
-        private void RpcTargetMethod()
+        private void TargetMethod(NetworkConnection conn)
         {
 
         }
