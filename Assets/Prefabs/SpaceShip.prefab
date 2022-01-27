@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraAttach: {fileID: 8760887349954014286}
+  _meshRenderer: {fileID: 2098753195374478650}
 --- !u!114 &7041942755433357698
 MonoBehaviour:
   m_ObjectHideFlags: 0

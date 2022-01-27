@@ -26,10 +26,17 @@ namespace Main
 
         public override void OnClientConnect(NetworkConnection conn)
         {
-            PlayerPrefs.DeleteAll();
-            _uiController.ActivateInputName();
-            _uiController.PlayerNameEntered += ResumeConnection;
-
+            //PlayerPrefs.DeleteAll(); //for debug
+            if (PlayerPrefs.HasKey("PlayerName"))
+            {
+                ResumeConnection();
+            }
+            else
+            {
+                _uiController.ActivateInputName();
+                _uiController.PlayerNameEntered += ResumeConnection;
+            }
+            
             void ResumeConnection()
             {
                 base.OnClientConnect(conn);

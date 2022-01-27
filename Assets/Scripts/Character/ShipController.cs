@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Main;
 using Network;
 using UI;
@@ -11,10 +12,13 @@ namespace Character
     {
         [SerializeField] 
         private Transform _cameraAttach;
+        [SerializeField]
+        private MeshRenderer _meshRenderer;
         private CameraOrbit _cameraOrbit;
         private PlayerLabel _playerLabel;
         private float _shipSpeed;
         private Rigidbody _rigidbody;
+        private Vector3 _startPosition;
 
         [SyncVar(hook = "DisplayPlayerName")] 
         private string _playerName;
@@ -48,6 +52,7 @@ namespace Character
             _cameraOrbit = FindObjectOfType<CameraOrbit>();
             _cameraOrbit.Initiate(_cameraAttach == null ? transform : _cameraAttach);
             _playerLabel = GetComponentInChildren<PlayerLabel>();
+            _startPosition = transform.position;
             base.OnStartAuthority();
         }
 
@@ -161,14 +166,45 @@ namespace Character
         [ServerCallback]
         public void OnTriggerEnter(Collider other)
         {
-            if(hasAuthority)
+            if (other.CompareTag("Planet"))
             {
-
+                RpcRespawn();
             }
-            else
+        }
+
+        [ServerCallback]
+        private void OnCollisionEnter(Collision other)
+        {
+            if (other.collider.CompareTag("Player"))
             {
-
+                RpcRespawn();
             }
+        }
+
+        [ClientRpc]
+        private void RpcRespawn()
+        {
+            if (!isLocalPlayer)
+                return;
+            
+            StartCoroutine(RespawnCoroutine());
+        }
+        
+        private IEnumerator RespawnCoroutine()
+        {
+            _rigidbody.isKinematic = true;
+            _rigidbody.detectCollisions = false;
+            
+            transform.position = _startPosition;
+
+            for (var i = 0; i < 10; i++)
+            {
+                _meshRenderer.enabled = i % 2 != 0 ;
+                yield return new WaitForSeconds(.5f);
+            }
+            
+            _rigidbody.isKinematic = false;
+            _rigidbody.detectCollisions = true;
         }
     }
 }
