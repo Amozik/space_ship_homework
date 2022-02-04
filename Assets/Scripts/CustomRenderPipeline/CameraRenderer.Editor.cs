@@ -8,6 +8,7 @@ namespace CustomRenderPipeline
     {
         partial void DrawUnsupportedShaders();
         partial void DrawGizmos();
+        partial void DrawUiInSceneView();
         
 #if UNITY_EDITOR
         private static readonly ShaderTagId[] _legacyShaderTagIds =
@@ -47,6 +48,15 @@ namespace CustomRenderPipeline
             
             _context.DrawGizmos(_camera, GizmoSubset.PreImageEffects);
             _context.DrawGizmos(_camera, GizmoSubset.PostImageEffects);
+        }
+
+        partial void DrawUiInSceneView()
+        {
+            if (_camera.cameraType == CameraType.SceneView)
+            {
+                ScriptableRenderContext.EmitWorldGeometryForSceneView(_camera);
+            }
+
         }
 
 #endif

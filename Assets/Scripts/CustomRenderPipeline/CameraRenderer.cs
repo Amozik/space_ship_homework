@@ -29,6 +29,7 @@ namespace CustomRenderPipeline
                 return;
             }
             
+            DrawUiInSceneView();
             Settings(parameters);
             DrawVisible();
             DrawUnsupportedShaders();
