@@ -6,15 +6,14 @@ namespace CustomRenderPipeline
 {
     public partial class CameraRenderer
     {
-        private const string BUFFER_NAME = "Camera Render";
-        
-        private readonly CommandBuffer _commandBuffer = new CommandBuffer {name = BUFFER_NAME};
+        private readonly CommandBuffer _commandBuffer = new CommandBuffer();
 
         private static readonly List<ShaderTagId> drawingShaderTagIds = new List<ShaderTagId>
         {
             new ShaderTagId("SRPDefaultUnlit"),
         };
         
+        private string _bufferName;
         private ScriptableRenderContext _context;
         private Camera _camera;
         private CullingResults _cullingResult;
@@ -47,14 +46,17 @@ namespace CustomRenderPipeline
         {
             _cullingResult = _context.Cull(ref parameters);
             _context.SetupCameraProperties(_camera);
+            
+            _bufferName = _camera.name;
+            _commandBuffer.name = _bufferName;
             _commandBuffer.ClearRenderTarget(true, true, Color.clear);
-            _commandBuffer.BeginSample(BUFFER_NAME);
+            _commandBuffer.BeginSample(_bufferName);
             ExecuteCommandBuffer();
         }
 
         private void Submit()
         {
-            _commandBuffer.EndSample(BUFFER_NAME);
+            _commandBuffer.EndSample(_bufferName);
             ExecuteCommandBuffer();
             _context.Submit();
         }
