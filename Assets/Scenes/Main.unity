@@ -3242,7 +3242,6 @@ GameObject:
   - component: {fileID: 2111770854}
   - component: {fileID: 2111770857}
   - component: {fileID: 2111770856}
-  - component: {fileID: 2111770855}
   m_Layer: 6
   m_Name: Ring
   m_TagString: Untagged
@@ -3264,20 +3263,6 @@ Transform:
   m_Father: {fileID: 1329998762}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 65.49, y: 0, z: 0}
---- !u!64 &2111770855
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2111770853}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &2111770856
 MeshRenderer:
   m_ObjectHideFlags: 0
