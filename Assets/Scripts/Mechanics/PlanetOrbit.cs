@@ -28,6 +28,16 @@ namespace Mechanics
         private Vector3 _currentPositionSmoothVelocity;
         private float _currentRotationAngle;
         
+        public float CircleInSecond
+        {
+            set => circleInSecond = value;
+        }
+
+        public float RotationSpeed
+        {
+            set => rotationSpeed = value;
+        }
+
         private void Start()
         {
             if (isServer)

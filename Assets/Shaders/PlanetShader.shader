@@ -13,6 +13,9 @@ Shader "Custom/PlanetShader"
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _Height("Height", Range(-1,1)) = 0
         _Seed("Seed", Range(0,10000)) = 10
+
+        _Shininess ("Shininess", Float) = 10
+
     }
     SubShader
     {
@@ -31,7 +34,8 @@ Shader "Custom/PlanetShader"
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
-                float4 color : COlOR;
+                float4 height : TEXCOORD1;
+                float4 lighting : COLOR;
             };
 
             float _FirstThreshold;
@@ -44,6 +48,9 @@ Shader "Custom/PlanetShader"
             fixed4 _Color3;
             float _Height;
             float _Seed;
+
+            uniform float4 _LightColor0;
+            uniform float _Shininess;
 
             float hash(float2 st)
             {
@@ -66,6 +73,24 @@ Shader "Custom/PlanetShader"
                 return result;
             }
 
+            float4 LightingCalculation(float4 normal, float4 lightColor, float shininess)
+            {
+				float3 n = normalize(mul(normal, unity_WorldToObject));
+				float3 l = normalize(_WorldSpaceLightPos0);
+				float3 v = normalize(_WorldSpaceCameraPos);
+ 
+				float NdotL = max(0.0, dot(n, l));
+				float3 a = UNITY_LIGHTMODEL_AMBIENT;
+				float3 d = NdotL * lightColor;
+				float3 r = reflect(-l, n);
+				float RdotV = max(0.0, dot(r, v));
+				float3 s = float3(0,0,0);
+				if (dot(n, l) > 0.0) 
+					s = lightColor * pow(RdotV, shininess);
+ 
+				return float4(d+a+s, 1.0);
+            }
+
             v2f vert(appdata_base v)
             {
                 v2f o;
@@ -74,15 +99,17 @@ Shader "Custom/PlanetShader"
                 
                 float height = noise(v.texcoord, 5) * 0.75 + noise(v.texcoord, 30) * 0.125 +
                     noise(v.texcoord, 50) * 0.125;
-                o.color.r = height + _Height;
+                o.height.x = height + _Height;
+                o.lighting = LightingCalculation(float4(v.normal, 0.0), _LightColor0, _Shininess);
 
                 float3 normal = frac(v.normal);
                 
-                const float layHeight = .01;
+                const float layHeight = .001;
                 if (height >= _SecondThreshold)
                 {
                     o.vertex.xyz += normal * layHeight;
-                } else if (height < _FirstThreshold)
+                }
+                else if (height < _FirstThreshold)
                 {
                     o.vertex.xyz -= normal * layHeight;
                 }
@@ -93,7 +120,7 @@ Shader "Custom/PlanetShader"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 color = tex2D(_MainTex, i.uv);
-                float height = i.color.r;
+                float height = i.height.x;
                 if (height < _FirstThreshold)
                 {
                     color = _Color1;
@@ -107,7 +134,7 @@ Shader "Custom/PlanetShader"
                     color = _Color3;
                 }
                 
-                return color;
+                return color * i.lighting;
             }
             ENDCG
         }

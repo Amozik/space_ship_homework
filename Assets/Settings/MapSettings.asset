@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 593de1d9038e41f2be972012555d70f5, type: 3}
+  m_Name: MapSettings
+  m_EditorClassIdentifier: 
+  _planetsInfo:
+  - planet: {fileID: 3275920579219397772, guid: efb770fdb2fa5014a92467cd5cf092a3, type: 3}
+    radius: 123.68508
+    angle: 1.65
+    circleInSecond: 0.001
+    rotationSpeed: 1
+  - planet: {fileID: 3698244542201825857, guid: 392ab37e189d02e40917e0a852a2fb86, type: 3}
+    radius: 215.678
+    angle: 0.9
+    circleInSecond: 0.0015
+    rotationSpeed: 5
+  - planet: {fileID: 601798397688717921, guid: 89c9696d00c5af4438eb1bae3b5ffec4, type: 3}
+    radius: 321.56647
+    angle: 15
+    circleInSecond: 0.002
+    rotationSpeed: 8
+  - planet: {fileID: 4841528974282499257, guid: 0206354e74c678f4797f7d17a6d1ccce, type: 3}
+    radius: 414.58655
+    angle: 5.85
+    circleInSecond: 0.0023
+    rotationSpeed: 0
+  - planet: {fileID: 9148203725219514280, guid: 79521ca4e7350ae4bbee27d459a27e13, type: 3}
+    radius: 676.14197
+    angle: 5.5
+    circleInSecond: 0.006
+    rotationSpeed: 10
+  - planet: {fileID: 432438962803280430, guid: bece9b139dc2c1549a68b87cdd721d96, type: 3}
+    radius: 804.65955
+    angle: 5.9
+    circleInSecond: 0.003
+    rotationSpeed: 12
+  - planet: {fileID: 4834235278798566823, guid: 4252ba70ffd1dbf44976975079b30f64, type: 3}
+    radius: 1014.0242
+    angle: 0
+    circleInSecond: 0.005
+    rotationSpeed: 6
+  - planet: {fileID: 2081096162310096043, guid: f9ac8806a776113418f4241bb908a633, type: 3}
+    radius: 1454.4862
+    angle: 5.6
+    circleInSecond: 0.008
+    rotationSpeed: 8
+  _star: {fileID: 4462102327834343529, guid: a5fc1e7b9f0c21c459da6d3ba8eda1f4, type: 3}
+  _starsCount: 50
+  _starsGenerationRadius: 1500

@@ -13,6 +13,7 @@ Shader "Custom/PlanetRingShader"
 
         Pass
         {
+            Cull Off
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
